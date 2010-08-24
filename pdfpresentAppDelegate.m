@@ -42,6 +42,12 @@
   [pdf_view2_ setDisplayMode:kPDFDisplaySinglePage];
   [pdf_view_ setAutoScales:YES];
   [pdf_view2_ setAutoScales:YES];
+  // Uggg, shouldn't this happen when you set setShouldAntiAlias?  I guess not.
+  // There is a thread about what Skim does, setting the graphics context to
+  // high interpolation in a drawPage subclass.  We do it the way that preview
+  // does it, and call an undocumented private method on PDFViewPrivate.  
+  [pdf_view_ setInterpolationQuality:2];
+  [pdf_view2_ setInterpolationQuality:2];
 
   [[NSNotificationCenter defaultCenter] addObserver:self
                                         selector:@selector(PageChanged:)
@@ -56,6 +62,7 @@
              withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
                  [NSNumber numberWithBool:NO], NSFullScreenModeAllScreens, nil]
              ];
+
   [doc release];
   return YES;
 }
